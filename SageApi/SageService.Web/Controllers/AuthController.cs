@@ -24,6 +24,7 @@ namespace SageService.Web.Controllers
         /// Logs you in  username/password for now)
         /// and returns a shiny new JWT token to use for other requests.
         /// </summary>
+        [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
             if (request.Username == "admin" && request.Password == "password")

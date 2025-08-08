@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -28,7 +29,6 @@ namespace SageService.Web.Services
         public string GenerateToken(string username, string tenantId)
         {
             var jwt = _config.GetSection("JwtSettings");
-
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Name, username),

@@ -29,6 +29,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Add Controllers
 builder.Services.AddControllers();
+builder.Services.AddScoped<SageService.Web.Services.TokenService>();
 
 // Configure Swagger + Include XML Comments + JWT Bearer Auth
 builder.Services.AddEndpointsApiExplorer();
