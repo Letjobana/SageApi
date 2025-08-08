@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SageService.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SageService.BackgroundJobs", "SageService.BackgroundJobs\SageService.BackgroundJobs.csproj", "{67BE4B18-F874-4DFD-81E6-5A84C695C7EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SageService.Web", "SageService.Web\SageService.Web.csproj", "{66C7DAE9-B6E6-46EB-B685-8E9BD8599B9F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SageSyncService.Tests", "SageSyncService.Tests\SageSyncService.Tests.csproj", "{6C03717D-80F4-4307-8557-06A5BC42030B}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{67BE4B18-F874-4DFD-81E6-5A84C695C7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67BE4B18-F874-4DFD-81E6-5A84C695C7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67BE4B18-F874-4DFD-81E6-5A84C695C7EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66C7DAE9-B6E6-46EB-B685-8E9BD8599B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66C7DAE9-B6E6-46EB-B685-8E9BD8599B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66C7DAE9-B6E6-46EB-B685-8E9BD8599B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66C7DAE9-B6E6-46EB-B685-8E9BD8599B9F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C03717D-80F4-4307-8557-06A5BC42030B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C03717D-80F4-4307-8557-06A5BC42030B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C03717D-80F4-4307-8557-06A5BC42030B}.Release|Any CPU.ActiveCfg = Release|Any CPU
