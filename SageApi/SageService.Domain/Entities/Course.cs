@@ -1,5 +1,4 @@
-﻿
-namespace SageService.Domain.Entities
+﻿namespace SageService.Domain.Entities
 {
     /// <summary>
     /// Course info needed to sync with Sage

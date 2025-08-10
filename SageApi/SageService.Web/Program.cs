@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using SageService.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Add Controllers
 builder.Services.AddControllers();
 builder.Services.AddScoped<SageService.Web.Services.TokenService>();
+builder.Services.AddApplication();
 
 // Configure Swagger + Include XML Comments + JWT Bearer Auth
 builder.Services.AddEndpointsApiExplorer();
