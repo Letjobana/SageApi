@@ -6,7 +6,11 @@
     public class ProviderApiCredentials
     {
         /// <summary>
-        /// API Key used for authenticating with Sage.
+        /// Provider Id Key used for authenticating.
+        /// </summary>
+        public int ProviderId { get; set; }
+        /// <summary>
+        /// Api Key for Sage API authentication
         /// </summary>
         public string ApiKey { get; set; } = string.Empty;
 

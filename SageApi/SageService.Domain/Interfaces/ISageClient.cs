@@ -1,42 +1,120 @@
-﻿using SageService.Domain.Entities;
+﻿using Newtonsoft.Json.Linq;
+using SageService.Domain.Entities;
 
 namespace SageService.Domain.Interfaces
 {
     /// <summary>
-    /// Client Interface
+    /// Minimal client abstraction over SageOne/Accounting API.
+    /// Keeps auth + base URL handling in one place.
+    /// Returns JSON (JObject/JArray).
     /// </summary>
     public interface ISageClient
     {
         /// <summary>
-        /// Talks to Sage One: creates/looks up products (items), customers and invoices.
-        /// All calls are async and safe to cancel.
+        /// Ensures CompanyId is set on the credential;
         /// </summary>
-        public interface ISageClient
-        {
-            /// <summary>
-            /// Makes sure the provider's Sage CompanyID is available (fetches and caches if needed).
-            /// </summary>
-            Task EnsureCompanyIdAsync(int providerId, CancellationToken ct = default);
+        /// <param name="creds">"Credentials</param>
+        /// <param name="updater">Updater</param>
+        /// <returns></returns>
+        Task<int> EnsureCompanyIdAsync(ProviderApiCredentials creds, IProviderCompanyUpdater updater);
 
-            /// <summary>
-            /// Returns the Sage Item (product) ID for this course. Creates it if it doesn't exist.
-            /// </summary>
-            Task<int> GetOrCreateProductForCourseAsync(Course course, CancellationToken ct = default);
+        /// <summary>
+        /// GET raw endpoint path (relative to BaseUrl)
+        /// </summary>
+        /// <param name="relativePath">Relative Path</param>
+        /// <param name="creds">Credentials</param>
+        /// <returns></returns>
+        Task<JObject> GetAsync(string relativePath, ProviderApiCredentials creds);
 
-            /// <summary>
-            /// Returns the Sage Customer ID for this learner. Creates it if it doesn't exist.
-            /// </summary>
-            Task<int> GetOrCreateCustomerForLearnerAsync(int providerId, Learner learner, Course course, CancellationToken ct = default);
+        /// <summary>
+        /// POST JSON to endpoint; returns parsed JSON.
+        /// </summary>
+        /// <param name="relativePath">Relative Path</param>
+        /// <param name="body">Body</param>
+        /// <param name="creds">Credentials</param>
+        /// <returns></returns>
+        Task<JObject> PostAsync(string relativePath, object body, ProviderApiCredentials creds);
 
-            /// <summary>
-            /// True if an unpaid invoice already exists for this customer + course reference.
-            /// </summary>
-            Task<bool> HasUnpaidInvoiceAsync(int providerId, int sageCustomerId, string projectReference, CancellationToken ct = default);
+        /// <summary>
+        /// PUT JSON to endpoint; returns parsed JSON.
+        /// </summary>
+        /// <param name="relativePath">Relative Path</param>
+        /// <param name="body">Body</param>
+        /// <param name="creds">Credentials</param>
+        /// <returns></returns>
+        Task<JObject> PutAsync(string relativePath, object body, ProviderApiCredentials creds);
 
-            /// <summary>
-            /// Creates a new invoice in Sage for the given learner and course details.
-            /// </summary>
-            Task<InvoiceResult> CreateInvoiceAsync(int providerId, int sageCustomerId,int sageProductId,decimal courseValue, string courseTitle, string projectReference,CancellationToken ct = default);
-        }
+        /// <summary>
+        /// DELETE to endpoint; returns parsed JSON (if any)
+        /// </summary>
+        /// <param name="relativePath">Relative Path</param>
+        /// <param name="creds">Credentials</param>
+        /// <returns></returns>
+        Task<JObject> DeleteAsync(string relativePath, ProviderApiCredentials creds);
+
+        /// <summary>
+        /// Gets tax types.
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <returns></returns>
+        Task<JObject> GetTaxTypesAsync(ProviderApiCredentials creds);
+
+        /// <summary>
+        /// Gets items by filter (e.g., code eq 'X')
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <param name="filter">Filter</param>
+        /// <returns></returns>
+        Task<JObject> GetItemsAsync(ProviderApiCredentials creds, string filter);
+
+        /// <summary>
+        /// Saves/creates an item
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <param name="itemPayload">Item Pay load</param>
+        /// <returns></returns>
+        Task<JObject> SaveItemAsync(ProviderApiCredentials creds, object itemPayload);
+
+        /// <summary>
+        /// Saves/creates a customer
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <param name="customerPayload">Customer Pay load</param>
+        /// <returns></returns>
+        Task<JObject> SaveCustomerAsync(ProviderApiCredentials creds, object customerPayload);
+
+        /// <summary>
+        /// Gets tax invoices
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <param name="includeDetail">Include Detail</param>
+        /// <returns></returns>
+        Task<JObject> GetTaxInvoicesAsync(ProviderApiCredentials creds, bool includeDetail);
+
+        /// <summary>
+        /// Saves/creates a tax invoice
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <param name="invoicePayload">Invoice Payload</param>
+        /// <param name="useSystemDocumentNumber">Use System Document Number</param>
+        /// <returns></returns>
+        Task<JObject> SaveTaxInvoiceAsync(ProviderApiCredentials creds, object invoicePayload, bool useSystemDocumentNumber);
+
+        /// <summary>
+        /// Posts CustomerStatement
+        /// </summary>
+        /// <param name="creds">Credentials</param>
+        /// <param name="page">Invoice Payload</param>
+        /// <param name="pageSize"></param>
+        /// <param name="body">Body</param>
+        /// <returns></returns>
+        Task<JObject> PostCustomerStatementsAsync(ProviderApiCredentials creds, int page, int pageSize, object body);
+    }
+    /// <summary>
+    /// Small abstraction so SageClient can persist newly discovered CompanyId without referencing repository directl
+    /// </summary>
+    public interface IProviderCompanyUpdater
+    {
+        Task UpdateCompanyIdAsync(int providerId, int companyId);
     }
 }
